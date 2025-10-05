@@ -1,0 +1,802 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  height: 100vh;
+  position: fixed;
+  width: 100%;
+}
+
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #000000 0%, #0d0e10 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-container {
+  text-align: center;
+  color: white;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.loading-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: 'Dancing Script', cursive;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+.loading-subtitle {
+  font-size: 16px;
+  opacity: 0.8;
+  font-family: Arial, sans-serif;
+  animation: fadeInOut 2s ease-in-out infinite 0.5s;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error Screen */
+.error-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f9d1d1 0%, #3e3636 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.error-container {
+  text-align: center;
+  color: white;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.error-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-family: 'Dancing Script', cursive;
+}
+
+.error-message {
+  font-size: 16px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  opacity: 0.9;
+  font-family: Arial, sans-serif;
+}
+
+.error-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+}
+
+.error-button:hover {
+  background: white;
+  color: #ff6b6b;
+  transform: translateY(-2px);
+}
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+}
+
+/* Background stars */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gift animation */
+.gift-container {
+  position: fixed;
+  top: 10%;
+  right: -200px;
+  /* Bắt đầu từ bên phải ngoài màn hình */
+  transform: translateY(-50%);
+  z-index: 15;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.gift {
+  width: 150px;
+  height: 150px;
+  animation: giftFloat 3s ease-in-out infinite;
+}
+
+.gift-container.show {
+  opacity: 1;
+  animation: giftMove 8s linear forwards;
+}
+
+/* Gift xuất hiện ở góc trái */
+.gift-appear {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.5s ease-in-out;
+}
+
+.gift-appear.show {
+  opacity: 1;
+  transform: scale(1);
+  animation: giftPulse 2s ease-in-out infinite;
+}
+
+.gift-image {
+  width: 100px;
+  height: 100px;
+}
+
+@keyframes giftMove {
+  0% {
+      right: -200px;
+  }
+
+  100% {
+      right: calc(100% + 200px);
+  }
+}
+
+@keyframes giftPulse {
+
+  0%,
+  100% {
+      transform: scale(1);
+  }
+
+  50% {
+      transform: scale(1.2);
+  }
+}
+
+/* Dialog popup */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.dialog-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  border: 3px solid #fff;
+}
+
+.dialog-overlay.show .dialog {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.dialog h2 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dialog p {
+  color: #fff;
+  font-size: 20px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dialog button {
+  background: #fff;
+  color: #ff6b6b;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dialog button:hover {
+  background: #ff6b6b;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Container cho ảnh dialog với QR */
+.dialog-image-container {
+  position: relative;
+  width: 550px;
+  height: 500px;
+  margin: 10px auto;
+  display: block;
+}
+
+.dialog-background {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.qr-overlay {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  image-rendering: auto;
+  animation-play-state: running;
+}
+
+
+.star {
+  position: absolute;
+  background: #ffd700;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+      opacity: 0.3;
+      transform: scale(1);
+  }
+
+  50% {
+      opacity: 1;
+      transform: scale(1.2);
+  }
+}
+
+
+/* Moon with rabbit - Top right */
+.moon-section {
+  position: fixed;
+  top: 1%;
+  right: 1%;
+  z-index: 10;
+}
+
+.moon {
+  width: 200px;
+  height: 200px;
+  animation: moon-glow 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+}
+
+/* Music control button */
+.music-control {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+}
+
+.play-pause-btn {
+  background: none;
+  border: 3px solid #edcb50;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.play-pause-btn:hover {
+  background: rgba(255, 215, 0, 1);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.play-pause-btn:active {
+  transform: scale(0.95);
+}
+
+#playIcon {
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+
+
+@keyframes moon-glow {
+
+  0%,
+  100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+  }
+
+  50% {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 40px rgba(255, 215, 0, 1));
+  }
+}
+
+
+/* Floating lanterns */
+.floating-lanterns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lantern {
+  position: absolute;
+  width: 180px;
+  height: auto;
+  animation: float-up 8s linear infinite;
+  filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.6));
+}
+
+.lantern:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.lantern:nth-child(2) {
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.lantern:nth-child(3) {
+  left: 30%;
+  animation-delay: 4s;
+}
+
+.lantern:nth-child(4) {
+  left: 60%;
+  animation-delay: 1s;
+}
+
+.lantern:nth-child(5) {
+  left: 70%;
+  animation-delay: 3s;
+}
+
+.lantern:nth-child(6) {
+  left: 80%;
+  animation-delay: 5s;
+}
+
+@keyframes float-up {
+  0% {
+      bottom: -100px;
+      opacity: 0;
+      transform: translateX(0px) rotate(0deg);
+  }
+
+  10% {
+      opacity: 1;
+  }
+
+  90% {
+      opacity: 1;
+  }
+
+  100% {
+      bottom: 100vh;
+      opacity: 0;
+      transform: translateX(20px) rotate(5deg);
+  }
+}
+
+/* Flying rabbit with ribbons - Middle left */
+.flying-rabbit-section {
+  position: fixed;
+  top: 30%;
+  left: 0;
+  z-index: 8;
+}
+
+.flying-rabbit {
+  width: 380px;
+  height: 380px;
+  animation: fly-around 6s ease-in-out infinite;
+}
+
+@keyframes fly-around {
+
+  0%,
+  100% {
+      transform: translate(0, 0) rotate(0deg);
+  }
+
+  25% {
+      transform: translate(20px, -20px) rotate(5deg);
+  }
+
+  50% {
+      transform: translate(-10px, -30px) rotate(-5deg);
+  }
+
+  75% {
+      transform: translate(-20px, -10px) rotate(3deg);
+  }
+}
+
+/* Traditional woman - Bottom right */
+.woman-section {
+  position: fixed;
+  bottom: 10%;
+  right: -1%;
+  z-index: 7;
+}
+
+.woman {
+  width: 500px;
+  height: auto;
+  animation: gentle-sway 4s ease-in-out infinite;
+}
+
+@keyframes gentle-sway {
+
+  0%,
+  100% {
+      transform: rotate(-1deg);
+  }
+
+  50% {
+      transform: rotate(1deg);
+  }
+}
+
+.mountain-section {
+  position: fixed;
+  bottom: -30px;
+  left: -200px;
+  z-index: 6;
+}
+
+.mountain {
+  width: 120vw;
+  height: 40vh;
+}
+
+
+.flying-rabbit-section,
+.woman-section,
+.mountain-section,
+.floating-lanterns {
+  pointer-events: none;
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+  /* Moon section - thu nhỏ và điều chỉnh vị trí */
+  .moon-section {
+      position: fixed;
+      top: 2%;
+      right: 2%;
+  }
+
+  .moon {
+      width: 120px;
+      height: 120px;
+  }
+
+  /* Music control button - mobile */
+  .play-pause-btn {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+  }
+
+  /* Flying rabbit - thu nhỏ và điều chỉnh */
+  .flying-rabbit-section {
+      position: fixed;
+      top: 65%;
+      left: -10%;
+  }
+
+  .flying-rabbit {
+      width: 200px;
+      height: 200px;
+  }
+
+  /* Woman section - thu nhỏ và điều chỉnh vị trí */
+  .woman-section {
+      position: fixed;
+      bottom: 5%;
+      right: -17%;
+  }
+
+  .woman {
+      width: 300px;
+      height: auto;
+  }
+
+  /* Mountain - thu nhỏ và điều chỉnh */
+  .mountain-section {
+      left: -10px;
+  }
+
+  .mountain {
+      width: 120vw;
+      height: 22vh;
+  }
+
+  /* Lanterns - thu nhỏ */
+  .lantern {
+      width: 60px;
+      height: auto;
+      max-width: 80px;
+  }
+
+  /* Dialog - mobile responsive */
+  .dialog {
+      max-width: 90vw;
+      padding: 8px;
+      margin: 10px;
+      border-radius: 15px;
+  }
+
+  .dialog h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+  }
+
+  .dialog p {
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+  }
+
+  .dialog button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 20px;
+  }
+
+  .dialog-image-container {
+      width: 80vw;
+      height: 40vh;
+      margin: 5px auto;
+  }
+
+  .qr-overlay {
+      width: 120px;
+      height: 120px;
+      top: 40%;
+  }
+
+}
+
+/* Extra small mobile responsive */
+@media (max-width: 480px) {
+  .dialog {
+      max-width: 95vw;
+      padding: 6px;
+      margin: 5px;
+      border-radius: 12px;
+  }
+
+  .dialog h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+  }
+
+  .dialog p {
+      font-size: 12px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+  }
+
+  .dialog button {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 18px;
+  }
+
+  .dialog-image-container {
+      width: 85vw;
+      height: 35vh;
+      margin: 3px auto;
+  }
+
+  .qr-overlay {
+      width: 100px;
+      height: 100px;
+      top: 40%;
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .mountain-section {
+      left: -10px;
+  }
+
+  .moon {
+      width: 260px;
+      height: 260px;
+  }
+
+  /* Music control button - tablet */
+  .play-pause-btn {
+      width: 70px;
+      height: 70px;
+      font-size: 28px;
+  }
+
+  .flying-rabbit-section {
+      position: fixed;
+      top: 65%;
+      left: -10%;
+  }
+
+  .flying-rabbit {
+      width: 500px;
+      height: 500px;
+  }
+
+  .woman-section {
+      position: fixed;
+      bottom: 5%;
+      right: -17%;
+  }
+
+  .woman {
+      width: 700px;
+      height: auto;
+  }
+
+  .mountain {
+      width: 110vw;
+      height: 22vh;
+  }
+
+  .dialog {
+      max-width: 95vw;
+      padding: 10px;
+      margin: 10px;
+  }
+
+  .dialog-image-container {
+      width: 85vw;
+      height: 65vh;
+  }
+
+  .qr-overlay {
+      width: 55vw;
+      height: 45vw;
+  }
+
+  .dialog p {
+      font-size: 28px;
+      font-family: 'Dancing Script', cursive;
+      font-weight: 600;
+      margin-bottom: 15px;
+  }
+
+  .dialog button {
+      padding: 15px 30px;
+      font-size: 20px;
+      font-family: 'Dancing Script', cursive;
+  }
+
+  .gift-container {
+      top: 7%;
+  }
+
+  .gift {
+      width: 180px;
+      height: 180px;
+  }
+
+  .gift-appear {
+      top: 30px;
+      left: 20px;
+
+  }
+
+  .gift-image {
+      width: 170px;
+      height: 170px;
+  }
+
+
+}
+Beta
+0 / 0
+used queries
+1

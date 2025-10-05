@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trung thu vui vẻ nhé</title>
+    
+    <!-- Meta tags cho SEO và chia sẻ mạng xã hội -->
+    <meta name="description" content="Chúc em và gia đình luôn luôn hạnh phúc 🌕✨">
+    <meta name="keywords" content="Trung thu, lời chúc, tình yêu, hạnh phúc, trăng rằm, messenger, facebook">
+    <meta name="author" content="Trung Thu">
+    
+    <!-- Open Graph Meta Tags cho Facebook & Messenger -->
+    <meta property="og:title" content="🌕 Trung thu vui vẻ nhé">
+    <meta property="og:description" content="Chúc em và gia đình luôn luôn hạnh phúc 🌕✨">
+    <meta property="og:image" content="https://trung-thu-two.vercel.app/image/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Trung thu vui vẻ nhé - Lời chúc hạnh phúc với mặt trăng và thỏ">
+  <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Trung Thu 3D">
+    <meta property="og:locale" content="vi_VN">
+    
+    <!-- Facebook App ID cho Messenger (nếu có) -->
+    <meta property="fb:app_id" content="">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🌕 Trung thu vui vẻ nhé">
+    <meta name="twitter:description" content="Chúc em và gia đình luôn luôn hạnh phúc 🌕✨">
+    <meta name="twitter:image" content="https://trung-thu-two.vercel.app/image/og-image.png">
+    <meta name="twitter:image:alt" content="Trung thu vui vẻ nhé - Lời chúc hạnh phúc với mặt trăng và thỏ">
+    
+    <!-- Additional Meta Tags cho Messenger -->
+    <meta property="article:author" content="Trung Thu">
+    <meta property="article:section" content="Lời chúc">
+    <meta property="article:tag" content="trung thu, lời chúc, tình yêu">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff69b4">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+      /* GIF floating layer */
+      #gif-layer{position:fixed;inset:0;pointer-events:none;z-index:12;}
+      .floating-gif{position:absolute;bottom:-140px;opacity:0;animation:gifFly var(--dur,16s) linear infinite;filter:drop-shadow(0 6px 12px rgba(255,200,160,.35));}
+      @keyframes gifFly{
+        0%{transform:translateY(0) translateX(0) scale(1);opacity:.0}
+        10%{opacity:1}
+        90%{opacity:1}
+        100%{transform:translateY(-110vh) translateX(var(--dx,20px)) scale(.95);opacity:0}
+      }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Đang tải dữ liệu...</div>
+            <div class="loading-subtitle">Vui lòng chờ trong giây lát</div>
+        </div>
+    </div>
+
+    <!-- Error Screen -->
+    <div class="error-screen" id="errorScreen" style="display: none;">
+        <div class="error-container">
+            <div class="error-icon">⚠️</div>
+            <div class="error-title">Không tìm thấy ID</div>
+            <div class="error-message">Vui lòng kiểm tra lại đường link hoặc liên hệ người gửi</div>
+            <button class="error-button" onclick="location.reload()">Thử lại</button>
+        </div>
+    </div>
+
+    <!-- Background stars -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Audio element -->
+    <audio id="backgroundMusic" loop preload="auto" crossorigin="anonymous">
+        <source src="music/anhnangcuaanh.mp3" type="audio/mpeg">
+        <source src="music/denbenanh.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Gift container -->
+    <div class="gift-container" id="giftContainer">
+        <img src="gift/rabbits.gif" alt="Gift" class="gift">
+    </div>
+
+    <!-- Gift xuất hiện ở góc trái -->
+    <div class="gift-appear" id="giftAppear">
+        <img src="image/gift.png" alt="Gift" class="gift-image" id="giftImage">
+    </div>
+
+    <!-- Dialog popup -->
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog">
+            <p>Chúc bé một mùa Trung Thu tràn đầy niềm vui, hạnh phúc và may mắn! 🌕✨<br>
+                Mong rằng những điều tốt đẹp nhất sẽ đến với em trong năm nay!
+                <br>
+                Đây là món quà của anh dành cho em
+                🐰🌙
+            </p>
+
+            <div class="dialog-image-container">
+                <img src="image/dialog.png" alt="Dialog Background" class="dialog-background">
+                <img src="gift/gift.gif" alt="Gift" class="qr-overlay" id="giftImage" style="cursor: pointer;" onerror="this.style.display='none'; console.error('Không thể load ảnh Gift:', this.src);">
+            </div>
+
+            <button onclick="closeDialog()">Đóng</button>
+        </div>
+    </div>
+    <!-- Moon with rabbit - Top right -->
+    <div class="moon-section">
+        <img src="image/moon.png" alt="Trăng Rằm" class="moon">
+        <!-- Music control button -->
+        <div class="music-control" id="musicControl">
+            <button id="playPauseBtn" class="play-pause-btn">
+                <span id="playIcon">🎵</span>
+            </button>
+  </div>
+
+    </div>
+
+    <!-- Flying rabbit with ribbons - Middle left -->
+    <div class="flying-rabbit-section">
+        <img src="image/rabbits.png" alt="Thỏ bay" class="flying-rabbit">
+    </div>
+
+    <!-- Traditional woman - Bottom right -->
+    <div class="woman-section">
+        <img src="image/sister.png" alt="Người phụ nữ truyền thống" class="woman">
+    </div>
+
+    <!-- Mountain/Cloud shapes - Bottom -->
+    <div class="mountain-section">
+        <img src="image/mountain.png" alt="Mountain" class="mountain">
+    </div>
+
+    <div class="floating-lanterns">
+        <img src="image/lantern.png" alt="Đèn lồng bay" class="lantern">
+        <img src="image/lantern2.png" alt="Đèn lồng bay" class="lantern">
+        <img src="image/lantern.png" alt="Đèn lồng bay" class="lantern">
+        <img src="image/lantern2.png" alt="Đèn lồng bay" class="lantern">
+        <img src="image/lantern.png" alt="Đèn lồng bay" class="lantern">
+        <img src="image/lantern2.png" alt="Đèn lồng bay" class="lantern">
+  </div>
+
+    <div id="ctrl" style="position:fixed;left:12px;top:12px;z-index:20;background:rgba(0,0,0,.35);padding:8px 10px;border-radius:8px;color:#fff;font:14px Arial;display:none;">
+      <label>Số lượng <input id="countRange" type="range" min="20" max="200" value="100"></label>
+      <label style="margin-left:8px;">Thu phóng <input id="scaleRange" type="range" min="0.3" max="3" value="1" step="0.1"></label>
+    </div>
+
+    <div id="gif-layer"></div>
+
+
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script src="./detect-devtools.js"></script>
+  <script type='text/javascript'>
+        // Bypass for developers
+        const keyName = 'key';
+        const keyValue = '9ac7ec230e0e4513578f309d6d3579ad';
+
+        // Handle via config
+        DisableDevtool({
+            tkName: keyName,
+            md5: keyValue,
+            interval: '100',
+        });
+    </script>
+
+    <script>
+        // Không dùng API/DB – chỉ giao diện tương tác
+        let giftLink = null;
+
+        // Function để lấy ID từ URL parameters
+        function getIdFromUrl() { return null; }
+
+        // Function để fetch dữ liệu từ API
+        async function fetchDataFromAPI(id) { return null; }
+
+        // Function để test audio URL
+        async function testAudioUrl(url) { return false; }
+
+        // Function để cập nhật audio source từ API
+        async function updateAudioSource() { /* no-op: dùng nhạc mặc định trong thẻ audio */ }
+
+
+        // Function để cập nhật URL ngay lập tức
+        function updateURLImmediately() {
+            const currentUrl = window.location.href;
+            const ogUrl = document.querySelector('meta[property="og:url"]');
+            if (ogUrl) {
+                ogUrl.setAttribute('content', currentUrl);
+                console.log('Đã cập nhật og:url thành:', currentUrl);
+            }
+        }
+
+        // Function để cập nhật meta tags cho chia sẻ mạng xã hội
+        function updateSocialMetaTags() {
+            updateURLImmediately();
+            // Dùng title/description tĩnh đã có trong <head>
+        }
+
+        function updateGiftLink() { /* no-op: không dùng backend */ }
+
+        // Function để hiển thị gift và thỏ
+        function showGiftAndRabbit() {}
+        function hideGiftAndRabbit() {}
+
+        // Function để hiển thị loading screen
+        function showLoading() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const errorScreen = document.getElementById('errorScreen');
+            loadingScreen.style.display = 'flex';
+            errorScreen.style.display = 'none';
+        }
+
+        // Function để ẩn loading screen
+        function hideLoading() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+
+        // Function để hiển thị error screen
+        function showError() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const errorScreen = document.getElementById('errorScreen');
+            loadingScreen.style.display = 'none';
+            errorScreen.style.display = 'flex';
+        }
+
+        // Function để khởi tạo dữ liệu
+        async function initializeData() {
+            // Bỏ qua toàn bộ kiểm tra/ API → luôn hiển thị giao diện tương tác
+            hideLoading();
+            return true;
+        }
+
+        // Function để hiển thị thông báo lỗi
+        function showErrorMessage(message) {
+            // Tạo thông báo tạm thời
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 0, 0, 0.8);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                z-index: 10000;
+                font-size: 14px;
+                max-width: 300px;
+            `;
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            // Tự động ẩn sau 5 giây
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 5000);
+        }
+
+        // Create floating stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 80;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize stars when page loads
+        window.addEventListener('load', createStars);
+
+        // Dialog functions
+        function showDialog() {
+            const dialogOverlay = document.getElementById('dialogOverlay');
+            dialogOverlay.classList.add('show');
+        }
+
+        function closeDialog() {
+            const dialogOverlay = document.getElementById('dialogOverlay');
+            dialogOverlay.classList.remove('show');
+        }
+
+        // Add click event to gift image
+        document.addEventListener('DOMContentLoaded', function () {
+            // Cập nhật URL ngay khi DOM ready để Messenger có thể đọc
+            updateURLImmediately();
+            
+            // Click vào gift ở góc trái để mở dialog
+            const giftAppearImage = document.getElementById('giftImage');
+            if (giftAppearImage) {
+                giftAppearImage.addEventListener('click', showDialog);
+            }
+            
+            // Click vào gift trong dialog để mở link quà tặng
+            const dialogGiftImage = document.querySelector('.qr-overlay');
+            if (dialogGiftImage) {
+                dialogGiftImage.addEventListener('click', function() { closeDialog(); });
+            }
+            
+            // Music control functionality
+            setupMusicControls();
+        });
+
+        // Music control functions
+        function setupMusicControls() {
+            const audio = document.getElementById('backgroundMusic');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playIcon = document.getElementById('playIcon');
+            let isPlaying = false;
+
+            // Set volume to 50% for better user experience
+            audio.volume = 0.5;
+
+            // Play/Pause button click handler
+            playPauseBtn.addEventListener('click', function() {
+                if (isPlaying) {
+                    audio.pause();
+                    playIcon.textContent = '🎵';
+                    playIcon.style.opacity = '0.7';
+                } else {
+                    audio.play().then(() => {
+                        playIcon.textContent = '⏸️';
+                        playIcon.style.opacity = '1';
+                    }).catch(error => {
+                        console.log('Audio play failed:', error);
+                        // Fallback: show play button even if audio fails
+                        playIcon.textContent = '🎵';
+                    });
+                }
+                isPlaying = !isPlaying;
+            });
+
+            // Auto-play on mobile after user interaction
+            function enableAutoPlay() {
+                // Try to play audio after user interaction
+                audio.play().then(() => {
+                    isPlaying = true;
+                    playIcon.textContent = '⏸️';
+                    playIcon.style.opacity = '1';
+                }).catch(error => {
+                    console.log('Auto-play failed:', error);
+                });
+            }
+
+            // Enable auto-play after first user interaction
+            let hasInteracted = false;
+            document.addEventListener('click', function() {
+                if (!hasInteracted) {
+                    hasInteracted = true;
+                    enableAutoPlay();
+                }
+            }, { once: true });
+
+            // Handle audio events
+            audio.addEventListener('ended', function() {
+                isPlaying = false;
+                playIcon.textContent = '🎵';
+                playIcon.style.opacity = '0.7';
+            });
+
+            audio.addEventListener('error', function() {
+                console.log('Audio error occurred');
+                playIcon.textContent = '🔇';
+                playIcon.style.opacity = '0.5';
+            });
+        }
+
+
+        // Gift animation - chỉ chạy khi có linkQR hợp lệ
+        function startGiftAnimation() {}
+        // scene + camera + renderer
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // orbit controls (xoay quanh controls.target)
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.07;
+
+        // lights
+        const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambient);
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+        dir.position.set(10, 20, 10);
+        scene.add(dir);
+
+        // group chứa text (dễ set target)
+        const textGroup = new THREE.Group();
+        scene.add(textGroup);
+        let objects = [];
+        let imageObjects = [];
+        let TEXT_COUNT = 100;
+        let groupScale = 1;
+        function applyGroupScale(){ textGroup.scale.set(groupScale, groupScale, groupScale); }
+
+        // Function để lấy danh sách câu chúc từ API hoặc dữ liệu mặc định
+        function getTexts() {
+            return [
+            "iu em",
+            "Hạnh phúc",
+            "BÉ YÊN MÃI XINH ĐẸP",
+            "Luôn vui vẻ",
+            "Mong tình yêu chúng ta luôn bền lâu như trăng rằm ",
+            "Trung thu vui vẻ",
+            "BÉ YÊN MÃI XINH ĐẸP",
+            "Cảm ơn em vì tất cả",
+            "iu công chúa của anh", 
+            "i love you"
+        ];
+        }
+
+        // (đã khai báo ở trên)
+
+        // Atlas: tách các phần từ og-image.png thành sprite runtime (dataURL)
+        const ATLAS_SRC = 'image/og-image.png';
+        // x,y,w,h: tọa độ tương đối (0..1) với gốc trái-trên của ảnh
+        const SPRITE_REGIONS = [
+          // x, y, w, h là khung bao rộng rãi; pad giúp lấy trọn chủ thể
+          { name:'moon',    x:0.30, y:0.08, w:0.30, h:0.30, pad:0.06 }, // trăng lớn
+          { name:'rabbitL', x:0.02, y:0.50, w:0.32, h:0.36, pad:0.06 }, // thỏ trái + mây
+          { name:'rabbitR', x:0.56, y:0.40, w:0.36, h:0.48, pad:0.06 }, // thỏ phải + bánh
+          { name:'lantern', x:0.68, y:0.00, w:0.14, h:0.24, pad:0.04 }  // đèn lồng treo
+        ];
+        // Polygon mask (tọa độ tuyệt đối 0..1 theo toàn ảnh), nếu khai báo sẽ cắt theo đa giác xéo
+        const SPRITE_POLYGONS = {
+          moon: [ {x:0.32,y:0.10},{x:0.62,y:0.10},{x:0.62,y:0.40},{x:0.32,y:0.40} ],
+          rabbitL: [ {x:0.02,y:0.52},{x:0.34,y:0.52},{x:0.34,y:0.86},{x:0.02,y:0.86} ],
+          rabbitR: [ {x:0.56,y:0.42},{x:0.92,y:0.42},{x:0.92,y:0.90},{x:0.56,y:0.90} ],
+          lantern: [ {x:0.70,y:0.00},{x:0.82,y:0.00},{x:0.82,y:0.24},{x:0.70,y:0.24} ]
+        };
+        // Ưu tiên dùng file đã tách sẵn (an toàn, không đụng chủ thể khác)
+        let SPRITE_URLS = ['gift/moon.png','gift/rabbit-left.png','gift/rabbit-right.png','gift/lantern.png'];
+        function buildSpritesFromAtlas(cb){
+          if (SPRITE_URLS.length){ cb && cb(SPRITE_URLS); return; }
+          const img = new Image();
+          img.onload = ()=>{
+            const W = img.naturalWidth, H = img.naturalHeight;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const urls = [];
+            SPRITE_REGIONS.forEach(r=>{
+              // Áp dụng padding để chắc chắn lấy toàn bộ chủ thể
+              const pad = Math.max(0, r.pad || 0);
+              let rx = Math.max(0, r.x - pad), ry = Math.max(0, r.y - pad);
+              let rw = Math.min(1 - rx, r.w + pad*2), rh = Math.min(1 - ry, r.h + pad*2);
+              const sx = Math.round(rx * W), sy = Math.round(ry * H);
+              const sw = Math.round(rw * W), sh = Math.round(rh * H);
+              // Vẽ vào canvas tạm
+              canvas.width = sw; canvas.height = sh;
+              ctx.clearRect(0,0,sw,sh);
+              // Nếu có polygon cho chủ thể, cắt xéo theo đa giác
+              const poly = SPRITE_POLYGONS[r.name];
+              if (poly && poly.length>=3){
+                ctx.save();
+                ctx.beginPath();
+                poly.forEach((p,idx)=>{
+                  // Chuyển về không gian vùng cắt
+                  const lx = (p.x - rx)/rw * sw;
+                  const ly = (p.y - ry)/rh * sh;
+                  if (idx===0) ctx.moveTo(lx, ly); else ctx.lineTo(lx, ly);
+                });
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+                ctx.restore();
+              } else {
+                // Không có polygon: cắt theo khối chữ nhật như trước
+                ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+              }
+              // Cắt bỏ vùng rìa trong suốt để viền khít hình
+              try {
+                const data = ctx.getImageData(0,0,sw,sh);
+                const arr = data.data; const thr = 8; // ngưỡng alpha
+                let minX = sw, minY = sh, maxX = -1, maxY = -1;
+                for (let y=0;y<sh;y++){
+                  for (let x=0;x<sw;x++){
+                    const a = arr[(y*sw + x)*4 + 3];
+                    if (a>thr){ if (x<minX) minX=x; if (y<minY) minY=y; if (x>maxX) maxX=x; if (y>maxY) maxY=y; }
+                  }
+                }
+                if (maxX>=minX && maxY>=minY){
+                  // thêm padding nhỏ sau khi trim để viền không bị cụt
+                  const extra = 2; // px
+                  const tw = Math.min(sw, maxX-minX+1 + extra*2);
+                  const th = Math.min(sh, maxY-minY+1 + extra*2);
+                  const sx2 = Math.max(0, minX - extra), sy2 = Math.max(0, minY - extra);
+                  const c2 = document.createElement('canvas'); c2.width = tw; c2.height = th;
+                  const g2 = c2.getContext('2d');
+                  g2.putImageData(ctx.getImageData(sx2,sy2,tw,th),0,0);
+                  urls.push(c2.toDataURL('image/png'));
+                } else {
+                  urls.push(canvas.toDataURL('image/png'));
+                }
+              } catch(e) {
+                urls.push(canvas.toDataURL('image/png'));
+              }
+            });
+            SPRITE_URLS = urls; cb && cb(urls);
+          };
+          img.src = ATLAS_SRC;
+        }
+        function getImagePaths() { return SPRITE_URLS; }
+
+        // hàm tạo mesh ảnh 3D
+        function makeImageMesh(imagePath) {
+            const loader = new THREE.TextureLoader();
+            const texture = loader.load(imagePath, function(texture) {
+                // Tính tỉ lệ gốc của ảnh
+                const aspectRatio = texture.image.width / texture.image.height;
+                
+                // Đặt kích thước dựa trên tỉ lệ gốc
+                const baseSize = 8;
+                let width, height;
+                
+                if (aspectRatio > 1) {
+                    // Ảnh ngang
+                    width = baseSize;
+                    height = baseSize / aspectRatio;
+                } else {
+                    // Ảnh dọc hoặc vuông
+                    width = baseSize * aspectRatio;
+                    height = baseSize;
+                }
+                
+                // Cập nhật geometry với tỉ lệ đúng
+                const geometry = new THREE.PlaneGeometry(width, height);
+                mesh.geometry.dispose();
+                mesh.geometry = geometry;
+            });
+            
+            const material = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+
+            const geometry = new THREE.PlaneGeometry(8, 8); // kích thước tạm thời
+            const mesh = new THREE.Mesh(geometry, material);
+
+            // thêm thuộc tính để điều khiển quỹ đạo bay
+            mesh.userData = {
+                originalY: mesh.position.y,
+                originalX: mesh.position.x,
+                originalZ: mesh.position.z,
+                pattern: Math.floor(Math.random() * 3) // 0: thẳng, 1: chéo trái, 2: chéo phải
+            };
+
+            return mesh;
+        }
+
+        // Đợi Google Fonts load xong trước khi tạo text
+        document.fonts.ready.then(function() {
+            console.log('Fonts loaded successfully');
+        });
+
+        // Function để test Messenger preview
+        function testMessengerPreview() {
+            console.log('=== MESSENGER PREVIEW TEST ===');
+            console.log('Title:', document.querySelector('meta[property="og:title"]')?.getAttribute('content'));
+            console.log('Description:', document.querySelector('meta[property="og:description"]')?.getAttribute('content'));
+            console.log('Image:', document.querySelector('meta[property="og:image"]')?.getAttribute('content'));
+            console.log('URL:', document.querySelector('meta[property="og:url"]')?.getAttribute('content'));
+            console.log('==============================');
+        }
+
+        // Khởi tạo dữ liệu khi trang load
+        window.addEventListener('load', async function() {
+            // Cập nhật URL ngay lập tức để Messenger có thể đọc đúng
+            updateSocialMetaTags();
+            
+            // Test Messenger preview
+            testMessengerPreview();
+            
+            const success = await initializeData();
+            if (success) {
+                // Nếu sprite files đã có thì dùng ngay, nếu không thử build từ atlas
+                if (SPRITE_URLS.length) { createTextAndImages(); }
+                else { buildSpritesFromAtlas(()=>{ createTextAndImages(); }); }
+            }
+        });
+
+        function clearTexts(){
+            for(const m of objects){ textGroup.remove(m); m.material?.map?.dispose(); m.material?.dispose(); m.geometry?.dispose(); }
+            objects = [];
+        }
+
+        // Function để tạo text và ảnh sau khi có dữ liệu
+        function createTextAndImages() {
+            clearTexts();
+            const fontLoader = new THREE.FontLoader();
+            fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+            // hàm tạo mesh text 3D
+            function makeTextMesh(message) {
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+
+                // Tự động tính kích thước canvas dựa trên độ dài chữ
+                context.font = "700 64px 'Dancing Script', cursive, 'Arial', sans-serif";
+                const textMetrics = context.measureText(message);
+                const textWidth = textMetrics.width;
+                const textHeight = 80; // chiều cao cố định
+
+                // Đặt kích thước canvas với padding
+                canvas.width = Math.max(textWidth + 40, 200); // tối thiểu 200px
+                canvas.height = textHeight + 20;
+
+                context.font = "700 64px 'Dancing Script', cursive, 'Arial', sans-serif";
+                context.fillStyle = "#ff69b4";
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+                context.fillText(message, canvas.width / 2, canvas.height / 2);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const material = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    transparent: true,
+                    side: THREE.DoubleSide  // để nhìn được cả mặt trước & sau
+                });
+
+                // Tự động tính kích thước geometry dựa trên canvas
+                const geometryWidth = (canvas.width / 512) * 12; // tỷ lệ với canvas gốc
+                const geometryHeight = (canvas.height / 256) * 6;
+                const geometry = new THREE.PlaneGeometry(geometryWidth, geometryHeight);
+                const mesh = new THREE.Mesh(geometry, material);
+                return mesh;
+            }
+
+
+            // tạo nhiều text 3D (xếp so le + lệch cao ngẫu nhiên)
+            const texts = getTexts();
+            for (let i = 0; i < TEXT_COUNT; i++) {
+                const text = texts[Math.floor(Math.random() * texts.length)];
+                const mesh = makeTextMesh(text);
+                const rowParity = (i % 2 === 0) ? -1 : 1; // so le trái/phải
+                const baseY = -40 + (i * 1.2);
+                const jitterY = (Math.random() - 0.5) * 3.0; // lệch cao ngẫu nhiên
+                const x = (Math.random() - 0.5) * 80 + rowParity * 5; // so le theo hàng
+                const y = baseY + jitterY;
+                const z = (Math.random() - 0.5) * 80;
+                mesh.position.set(x, y, z);
+                // lưu tốc độ và pha để chuyển động không đồng bộ
+                mesh.userData.dy = 0.06 + Math.random() * 0.06; // tốc độ bay lên khác nhau
+                mesh.userData.dx = (Math.random() - 0.5) * 0.06; // trôi ngang nhẹ
+                mesh.userData.phase = Math.random() * Math.PI * 2; // pha lệch cao
+                textGroup.add(mesh);
+                objects.push(mesh);
+            }
+
+            // tạo ảnh nổi bọt (mật độ thấp hơn text)
+            const imagePaths = getImagePaths();
+            for (let i = 0; i < 10; i++) { // mật độ thấp
+                let imagePath = imagePaths[Math.floor(Math.random() * imagePaths.length)];
+                let imageMesh = makeImageMesh(imagePath);
+                imageMesh.position.set(
+                    (Math.random() - 0.5) * 80,
+                    -80 + (i * 10),
+                    (Math.random() - 0.5) * 80
+                );
+                scene.add(imageMesh);
+                imageObjects.push(imageMesh);
+            }
+
+
+            // đặt camera và controls target để xoay quanh group (khoảng giữa)
+            camera.position.set(0, 12, 60);
+            controls.target.set(0, 10, 0);
+            controls.update();
+            });
+        }
+
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animation cho text (so le & lệch cao liên tục)
+            objects.forEach(obj => {
+                const dy = obj.userData.dy || 0.08;
+                const dx = obj.userData.dx || 0;
+                const ph = obj.userData.phase || 0;
+                obj.position.y += dy; // bay lên
+                obj.position.x += dx; // trôi ngang nhẹ
+                // dao động nhỏ theo pha để tránh thẳng hàng
+                obj.position.y += Math.sin((performance.now()/1000) + ph) * 0.02;
+                if (obj.position.y > 50) {
+                    obj.position.y = -50; // reset xuống dưới xa hơn để tránh đứt quãng
+                }
+            });
+
+            // Animation cho ảnh với các quỹ đạo bay khác nhau
+            imageObjects.forEach(imgObj => {
+                const pattern = imgObj.userData.pattern;
+
+                // Bay lên (tất cả đều bay lên)
+                imgObj.position.y += 0.06;
+
+                // Quỹ đạo bay khác nhau - chỉ thay đổi hướng bay
+                if (pattern === 0) {
+                    // Bay thẳng lên (không di chuyển ngang)
+                    imgObj.position.x += 0;
+                } else if (pattern === 1) {
+                    // Bay chéo sang trái (di chuyển sang trái khi bay lên)
+                    imgObj.position.x -= 0.03;
+                } else if (pattern === 2) {
+                    // Bay chéo sang phải (di chuyển sang phải khi bay lên)
+                    imgObj.position.x += 0.03;
+                }
+
+                // Reset khi bay quá cao - reset xa hơn để liền mạch
+                if (imgObj.position.y > 70) {
+                    imgObj.position.y = -90; // reset xa hơn để tránh khoảng trống
+                    imgObj.position.x = (Math.random() - 0.5) * 80;
+                    imgObj.position.z = (Math.random() - 0.5) * 80;
+                    // Random lại pattern
+                    imgObj.userData.pattern = Math.floor(Math.random() * 3);
+                }
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+
+        // Tinh chỉnh OrbitControls & tương tác
+        controls.enableZoom = true;
+        controls.enablePan = false;
+        controls.minDistance = 20;
+        controls.maxDistance = 200;
+
+        // Wheel để thu phóng nhóm chữ
+        window.addEventListener('wheel', (e)=>{
+            groupScale *= (e.deltaY > 0 ? 0.95 : 1.05);
+            groupScale = Math.max(0.3, Math.min(3, groupScale));
+            applyGroupScale();
+        });
+
+        // Raycast click để “nhịp” chữ
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        window.addEventListener('click', (e)=>{
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const hits = raycaster.intersectObjects(objects, false);
+            if (hits.length){ const m = hits[0].object; m.scale.set(1.3,1.3,1); setTimeout(()=>m.scale.set(1,1,1),300); }
+        });
+
+        // UI sliders
+        const countRange = document.getElementById('countRange');
+        const scaleRange = document.getElementById('scaleRange');
+        countRange && countRange.addEventListener('input', ()=>{ TEXT_COUNT = parseInt(countRange.value,10) || 100; createTextAndImages(); });
+        scaleRange && scaleRange.addEventListener('input', ()=>{ groupScale = parseFloat(scaleRange.value) || 1; applyGroupScale(); });
+
+        // Floating GIFs (rabbits.gif, meo3.gif, gift.gif)
+        const gifSources = ['gift/rabbits.gif','gift/meo3.gif','gift/gift.gif'];
+        const gifLayer = document.getElementById('gif-layer');
+        function createFloatingGif(){
+          if(!gifLayer) return;
+          const src = gifSources[Math.floor(Math.random()*gifSources.length)];
+          const img = document.createElement('img');
+          img.src = src; img.className = 'floating-gif';
+          const w = 80 + Math.random()*80; // 80-160px
+          const left = Math.random()*90 + 5; // 5%-95%
+          const dur = 14 + Math.random()*8; // 14-22s
+          const delay = Math.random()*4; const dx = (Math.random()-0.5)*80 + 'px';
+          img.style.width = w+'px';
+          img.style.left = left+'%';
+          img.style.setProperty('--dur', dur+'s');
+          img.style.setProperty('--dx', dx);
+          img.style.animationDelay = delay+'s';
+          gifLayer.appendChild(img);
+          setTimeout(()=> img.remove(), (dur+delay)*1000 + 500);
+        }
+        // seed & low density loop
+        for(let i=0;i<3;i++) setTimeout(createFloatingGif, i*1500);
+        setInterval(createFloatingGif, 4000);
+
+        animate();
+
+        // handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>
